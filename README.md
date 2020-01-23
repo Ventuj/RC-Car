@@ -36,6 +36,6 @@ Sound
 ###### PinOut
 
 ## Docs
-###### SChema elettrico 
+###### Schema elettrico 
 
 ###### Gerber file PCB
