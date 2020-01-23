@@ -1,6 +1,8 @@
 # Remote 4x4 Car
 
 ## V1.0 (IR)
+###### Componenti
+
 ###### PinOut
 LED Status
 - D3 -> Red
@@ -24,7 +26,16 @@ Sound
 
 
 ## V2.0 (Bluetooth)
+###### Componenti
+
 ###### PinOut
 
 ## V3.0
+###### Componenti
+
 ###### PinOut
+
+## Docs
+###### SChema elettrico 
+
+###### Gerber file PCB
