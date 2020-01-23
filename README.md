@@ -1,6 +1,6 @@
 # Remote 4x4 Car
 
-# V1.0 (IR)
+## V1.0 (IR)
 ###### PinOut
 - D3 Red
 - D4 Green
@@ -14,8 +14,8 @@
 - D12 Buzzer
 
 
-# V2.0 (Bluetooth)
+## V2.0 (Bluetooth)
 ###### PinOut
 
-# V3.0
+## V3.0
 ###### PinOut
