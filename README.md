@@ -42,12 +42,14 @@ Sound
 - 1x Buzzer (optional)
 - 1x RGB Led (optional)
 - 1x HC-05 (Bluetooth Module)
-- 2x Tectile switch
+- 2x Button 6*6*8
 - 1x 2P PCB connector
 - 3x 40P Female Header [1x(1x8), 4x(1x6), 1x(1x5), 5x(1x4), 1x(2x4), 1x(1x3), 3x(1x2)]
 - 1x 8P Male Header [1x(2x4)]
 - 4x HC-SR04 (Ultrasonic Sensor)
 - 4x DC Motors
+- 1x Arduino MEGA
+- 1x 12V battery pack
 
 ###### PinOut
 
@@ -60,12 +62,14 @@ Sound
 - 1x Buzzer (Optional)
 - 1x RGB Led (Optional)
 - 1x ESP8266 (WI-FI Module)
-- 2x Tectile switch
+- 2x Button 6*6*8
 - 1x 2P PCB connector
 - 3x 40P Female Header [1x(1x8), 4x(1x6), 1x(1x5), 5x(1x4), 1x(2x4), 1x(1x3), 3x(1x2)]
 - 1x 8P Male Header [1x(2x4)]
 - 4x HC-SR04 (Ultrasonic Sensor)
 - 4x DC Motors
+- 1x Arduino MEGA
+- 1x 12V battery pack
 
 ###### PinOut
 
