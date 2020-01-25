@@ -73,5 +73,10 @@ Sound
 ###### Wire diagram 
 
 ###### Gerber file PCB
+Top view of PCB
+
 ![Top](https://i.imgur.com/KZjgPiB.png)
+
+Bottom view of PCB
+
 ![Bottom](https://i.imgur.com/OTyLNAK.png)
