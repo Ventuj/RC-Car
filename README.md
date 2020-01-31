@@ -79,8 +79,8 @@ Sound
 ###### Gerber file PCB
 Top view of PCB
 
-![Top](https://i.imgur.com/KZjgPiB.png)
+![Top](https://imgur.com/8ne1XnH.png)
 
 Bottom view of PCB
 
-![Bottom](https://i.imgur.com/OTyLNAK.png)
+![Bottom](https://imgur.com/dRdI0da.png)
