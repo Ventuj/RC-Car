@@ -12,9 +12,29 @@ int C1 = 23;
 int T2 = 24;
 int C2 = 25;
 
-int perc = 60;
-int Speed = (perc * 255) / 100;
- 
+int clockPin = 16; //pin 11
+int latchPin = 15; //pin 12
+int dataPin = 14; //pin 14
+
+int pot = A1;
+
+int perc = 80;
+//int Speed = (perc * 255) / 100;
+
+int Speed;
+
+byte test[] = {
+  B00000000,
+  B00000001,
+  B00000011,
+  B00000111,
+  B00001111,
+  B00011111,
+  B00111111,
+  B01111111,
+  B11111111
+};
+
 void setup(){
   Serial.begin(9600);
   //EEBlue.begin(9600);
@@ -31,7 +51,12 @@ void setup(){
   pinMode(C1, INPUT);
   pinMode(led, OUTPUT);
   //analogWrite(led, 20);
-
+    
+  pinMode(dataPin, OUTPUT);
+  pinMode(latchPin, OUTPUT);
+  pinMode(clockPin, OUTPUT);
+  pinMode(pot, INPUT);
+  
   while (!Serial) {
     ; // wait for serial port to connect. Needed for native USB port only
   }
@@ -115,9 +140,24 @@ int distance(int t, int e){
   return distance;
 }
 
+void velocita(){
+  int vpot = analogRead(pot);
+  int var = map(vpot, 0,1023, 0, 9);
+  Speed = map(vpot, 0,1023, 30, 256);
+  digitalWrite(latchPin, LOW);           
+  shiftOut(dataPin, clockPin, MSBFIRST, test[var]);
+  digitalWrite(latchPin, HIGH);   
+  if(av){
+    avanti();       
+  }else{
+    if(ind){
+      indietro();
+    }
+  }
+}
 
 void loop() {
-
+  velocita();
   if(check){
     if(dist[0] < 8){
       av = false;
