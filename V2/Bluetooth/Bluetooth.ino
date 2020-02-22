@@ -12,7 +12,8 @@ int C1 = 23;
 int T2 = 24;
 int C2 = 25;
 
-int Speed = 0;
+int perc = 60;
+int Speed = (perc * 255) / 100;
  
 void setup(){
   Serial.begin(9600);
@@ -52,7 +53,7 @@ int dist[4] = {0,0,0,0};
 //movimenti
 void ferma(){
   //analogWrite(led, 250);
-  for(int i = 100; i > 20; i--){
+  for(int i = Speed; i > 20; i--){
     analogWrite(E1, i);
     analogWrite(E2, i);
     delay(5);
@@ -65,17 +66,17 @@ void ferma(){
 }
 
 void avanti(){
-  analogWrite(E1, 100);
-  analogWrite(E2, 100);
   digitalWrite(M1, LOW);
   digitalWrite(M2, HIGH);
   digitalWrite(M3, LOW);
   digitalWrite(M4, HIGH);
+  analogWrite(E1, Speed);
+  analogWrite(E2, Speed);
 }
 
 void indietro(){
-  analogWrite(E1, 100);
-  analogWrite(E2, 100);
+  analogWrite(E1, Speed);
+  analogWrite(E2, Speed);
   digitalWrite(M1, HIGH);
   digitalWrite(M2, LOW);
   digitalWrite(M3, HIGH);
@@ -83,8 +84,8 @@ void indietro(){
 }
 
 void dx(){
-  analogWrite(E1, 100);
-  analogWrite(E2, 100);
+  analogWrite(E1, Speed);
+  analogWrite(E2, Speed);
   digitalWrite(M1, HIGH);
   digitalWrite(M2, LOW);
   digitalWrite(M3, LOW);
@@ -92,8 +93,8 @@ void dx(){
 }
 
 void sx(){
-  analogWrite(E1, 100);
-  analogWrite(E2, 100);
+  analogWrite(E1, Speed);
+  analogWrite(E2, Speed);
   digitalWrite(M1, LOW);
   digitalWrite(M2, HIGH);
   digitalWrite(M3, HIGH);
@@ -116,15 +117,19 @@ int distance(int t, int e){
 
 
 void loop() {
+
   if(check){
-    if(dist[0] < 6 || dist[1] < 6 || dist[2] < 6 || dist[3] < 6){
-      av = ind = false;
-      if(av){
-        indietro();
-      }else{
-        avanti();
-      }
-      Serial.println("Ho trovato un ostacolo!"));
+    if(dist[0] < 8){
+      av = false;
+      indietro();
+      Serial.println("Ho trovato un ostacolo!");
+      delay(100);
+      ferma();
+    }
+    if(dist[1] < 8){
+      av = false;
+      indietro();
+      Serial.println("Ho trovato un ostacolo!");
       delay(100);
       ferma();
     }
