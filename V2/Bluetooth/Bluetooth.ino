@@ -16,25 +16,44 @@ int clockPin = 16; //pin 11
 int latchPin = 15; //pin 12
 int dataPin = 14; //pin 14
 
+int clockPin1 = 19; //pin 11
+int latchPin1 = 18; //pin 12
+int dataPin1 = 17; //pin 14
+
 int pot = A1;
 
 int perc = 80;
 //int Speed = (perc * 255) / 100;
 
 int Speed;
+int distanza;
+
+int green = A2;
+int red = A3;
 
 byte test[] = {
   B00000000,
-  B00000001,
-  B00000011,
-  B00000111,
-  B00001111,
-  B00011111,
-  B00111111,
-  B01111111,
+  B10000000,
+  B11000000,
+  B11100000,
+  B11110000,
+  B11111000,
+  B11111100,
+  B11111110,
   B11111111
 };
 
+byte fari[] = {
+  B10000001,
+  B11000011,
+  B11100111,
+};
+
+byte fari1[] = {
+  B11100111,
+  B11000011,
+  B10000001,
+};
 void setup(){
   Serial.begin(9600);
   //EEBlue.begin(9600);
@@ -55,7 +74,15 @@ void setup(){
   pinMode(dataPin, OUTPUT);
   pinMode(latchPin, OUTPUT);
   pinMode(clockPin, OUTPUT);
+  
+  pinMode(dataPin1, OUTPUT);
+  pinMode(latchPin1, OUTPUT);
+  pinMode(clockPin1, OUTPUT);
   pinMode(pot, INPUT);
+  pinMode(green, OUTPUT);
+  pinMode(red, OUTPUT);
+  
+  digitalWrite(red, HIGH);
   
   while (!Serial) {
     ; // wait for serial port to connect. Needed for native USB port only
@@ -139,11 +166,11 @@ int distance(int t, int e){
   //Serial.println(distance);
   return distance;
 }
-
 void velocita(){
   int vpot = analogRead(pot);
   int var = map(vpot, 0,1023, 0, 9);
   Speed = map(vpot, 0,1023, 30, 256);
+  distanza = map(vpot, 0, 1023, 4, 15);
   digitalWrite(latchPin, LOW);           
   shiftOut(dataPin, clockPin, MSBFIRST, test[var]);
   digitalWrite(latchPin, HIGH);   
@@ -159,14 +186,14 @@ void velocita(){
 void loop() {
   velocita();
   if(check){
-    if(dist[0] < 8){
+    if(dist[0] < distanza){
       av = false;
       indietro();
       Serial.println("Ho trovato un ostacolo!");
       delay(100);
       ferma();
     }
-    if(dist[1] < 8){
+    if(dist[1] < distanza){
       av = false;
       indietro();
       Serial.println("Ho trovato un ostacolo!");
@@ -180,9 +207,13 @@ void loop() {
       if(check){
         av = ind = check = false;
         Serial.println("Macchina stoppata");
+        digitalWrite(red, HIGH);
+        digitalWrite(green, LOW);
         ferma();
       }else{
         check = true;
+        digitalWrite(red, LOW);
+        digitalWrite(green, HIGH);
         Serial.println("Macchina avviata");
         Serial.println("Powered By Ventuj-Industries");
       }
@@ -190,10 +221,26 @@ void loop() {
     if(ch == 'f'){
       if(faro){
         faro = false;
-        digitalWrite(led, LOW);
+        for(int i = 0; i < sizeof(fari1); i++){
+          digitalWrite(latchPin1, LOW);           
+          shiftOut(dataPin1, clockPin1, MSBFIRST, fari1[i]);
+          digitalWrite(latchPin1, HIGH); 
+          delay(70);
+        }       
+        digitalWrite(latchPin1, LOW);           
+        shiftOut(dataPin1, clockPin1, MSBFIRST, 0);
+        digitalWrite(latchPin1, HIGH); 
       }else{
         faro = true;
-        digitalWrite(led, HIGH);
+        for(int i = 0; i < sizeof(fari); i++){
+          digitalWrite(latchPin1, LOW);           
+          shiftOut(dataPin1, clockPin1, MSBFIRST, fari[i]);
+          digitalWrite(latchPin1, HIGH); 
+          delay(70);
+        }       
+        digitalWrite(latchPin1, LOW);           
+        shiftOut(dataPin1, clockPin1, MSBFIRST, 255);
+        digitalWrite(latchPin1, HIGH); 
       }
     }
     if(check){
@@ -211,11 +258,11 @@ void loop() {
       }
       if(ch == '2'){
         if(ind){
-          Serial.println("Idietro - OFF");
+          Serial.println("Indietro - OFF");
           ind = false;
           ferma();
         }else{
-          Serial.println("Idietro - ON");
+          Serial.println("Indietro - ON");
           av = false;
           ind = true;
           indietro();
