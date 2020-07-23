@@ -137,8 +137,8 @@ Analogici
 ###### Gerber file PCB
 Top view of PCB
 
-![Top](https://i.imgur.com/LWbOhN6.png)
+![Top](https://i.imgur.com/vG5EBmy.png) 
 
 Bottom view of PCB
 
-![Bottom](https://i.imgur.com/FPzaGTB.png)
+![Bottom](https://i.imgur.com/CqWlIeZ.png)
