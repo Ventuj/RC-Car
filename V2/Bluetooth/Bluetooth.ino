@@ -12,13 +12,17 @@ int C1 = 23;
 int T2 = 24;
 int C2 = 25;
 
-int clockPin = 16; //pin 11
-int latchPin = 15; //pin 12
-int dataPin = 14; //pin 14
 
-int clockPin1 = 19; //pin 11
-int latchPin1 = 18; //pin 12
-int dataPin1 = 17; //pin 14
+//speed
+int clockPin = 19; //pin 11 19
+int latchPin = 18; //pin 12 18
+int dataPin = 17; //pin 14 17
+
+
+//fari 
+int clockPin1 = 14; //pin 11 16 
+int latchPin1 = 15; //pin 12 15
+int dataPin1 = 16; //pin 14 14 
 
 int pot = A1;
 
@@ -28,8 +32,8 @@ int perc = 80;
 int Speed;
 int distanza;
 
-int green = A2;
-int red = A3;
+int green = 8;
+int red = 9;
 
 byte test[] = {
   B00000000,
@@ -89,6 +93,8 @@ void setup(){
   }
   Serial.println("Connssione con RC Car avvenuta!");
   Serial.println();
+
+  turnoff();
 }
 
 bool check = false;
@@ -104,6 +110,15 @@ int dist[4] = {0,0,0,0};
 
 //movimenti
 void ferma(){
+  int val = 0;
+  if(faro){
+    val = 255;
+  }
+  //posteriori
+  digitalWrite(latchPin1, LOW);
+  shiftOut(dataPin1, clockPin1, MSBFIRST, val);
+  shiftOut(dataPin1, clockPin1, MSBFIRST, 255);
+  digitalWrite(latchPin1, HIGH); 
   //analogWrite(led, 250);
   for(int i = Speed; i > 20; i--){
     analogWrite(E1, i);
@@ -115,15 +130,20 @@ void ferma(){
   digitalWrite(M2, LOW);
   digitalWrite(M3, LOW);
   digitalWrite(M4, LOW);
+  //posteriori
+  digitalWrite(latchPin1, LOW);
+  shiftOut(dataPin1, clockPin1, MSBFIRST, val);
+  shiftOut(dataPin1, clockPin1, MSBFIRST, 0);
+  digitalWrite(latchPin1, HIGH); 
 }
 
 void avanti(){
+  analogWrite(E1, Speed);
+  analogWrite(E2, Speed);
   digitalWrite(M1, LOW);
   digitalWrite(M2, HIGH);
   digitalWrite(M3, LOW);
   digitalWrite(M4, HIGH);
-  analogWrite(E1, Speed);
-  analogWrite(E2, Speed);
 }
 
 void indietro(){
@@ -222,24 +242,28 @@ void loop() {
       if(faro){
         faro = false;
         for(int i = 0; i < sizeof(fari1); i++){
-          digitalWrite(latchPin1, LOW);           
+          digitalWrite(latchPin1, LOW);        
           shiftOut(dataPin1, clockPin1, MSBFIRST, fari1[i]);
+          shiftOut(dataPin1, clockPin1, MSBFIRST, 0);
           digitalWrite(latchPin1, HIGH); 
           delay(70);
         }       
-        digitalWrite(latchPin1, LOW);           
+        digitalWrite(latchPin1, LOW);      
+        shiftOut(dataPin1, clockPin1, MSBFIRST, 0);  
         shiftOut(dataPin1, clockPin1, MSBFIRST, 0);
         digitalWrite(latchPin1, HIGH); 
       }else{
         faro = true;
         for(int i = 0; i < sizeof(fari); i++){
-          digitalWrite(latchPin1, LOW);           
+          digitalWrite(latchPin1, LOW);
           shiftOut(dataPin1, clockPin1, MSBFIRST, fari[i]);
+          shiftOut(dataPin1, clockPin1, MSBFIRST, 0);
           digitalWrite(latchPin1, HIGH); 
           delay(70);
         }       
-        digitalWrite(latchPin1, LOW);           
+        digitalWrite(latchPin1, LOW);      
         shiftOut(dataPin1, clockPin1, MSBFIRST, 255);
+        shiftOut(dataPin1, clockPin1, MSBFIRST, 0);
         digitalWrite(latchPin1, HIGH); 
       }
     }
@@ -312,4 +336,11 @@ void loop() {
   }
   dist[0] = distance(T1, C1);
   dist[1] = distance(T2, C2);
+}
+
+void turnoff(){
+  digitalWrite(latchPin1, LOW);      
+  shiftOut(dataPin1, clockPin1, MSBFIRST, 0);
+  shiftOut(dataPin1, clockPin1, MSBFIRST, 0);
+  digitalWrite(latchPin1, HIGH); 
 }
